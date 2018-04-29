@@ -18,7 +18,7 @@
     <TableView Intent="Form" Grid.Row="1">
       <TableView.Root>
         <TableSection Title="Project">
-          <EntryCell Label="Name" Text="{Binding Model.Name}"/>
+          <EntryCell Label="Name" Text="{Binding NameInfo.Value}"/>
           <EntryCell Label="Description" Text="{Binding Model.Description}"/>
         </TableSection>
       </TableView.Root>

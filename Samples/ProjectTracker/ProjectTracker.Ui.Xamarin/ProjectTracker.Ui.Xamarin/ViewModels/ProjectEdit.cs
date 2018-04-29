@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ProjectTracker.Library;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Csla.Xaml;
 
 namespace XamarinFormsUi.ViewModels
 {
@@ -23,9 +24,37 @@ namespace XamarinFormsUi.ViewModels
       ProjectId = projectId;
     }
 
+    protected override void OnModelChanged(ProjectTracker.Library.ProjectEdit oldValue, ProjectTracker.Library.ProjectEdit newValue)
+    {
+      base.OnModelChanged(oldValue, newValue);
+      try
+      {
+        _nameInfo = new PropertyInfo { BindingContext = newValue, Path = "Name" };
+      }
+      catch (Exception ex)
+      {
+        var x = ex;
+      }
+    }
+
+    private PropertyInfo _nameInfo = new PropertyInfo();
+    public PropertyInfo NameInfo
+    {
+      get { return _nameInfo; }
+    }
+
     protected override async Task<ProjectTracker.Library.ProjectEdit> DoInitAsync()
     {
-      return await ProjectTracker.Library.ProjectEdit.GetProjectAsync(ProjectId);
+      var obj = await ProjectTracker.Library.ProjectEdit.GetProjectAsync(ProjectId);
+      try
+      {
+        _nameInfo = new PropertyInfo { BindingContext = obj, Path = "Name" };
+      }
+      catch (Exception ex)
+      {
+        var x = ex;
+      }
+      return obj;
     }
   }
 }
