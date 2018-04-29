@@ -508,31 +508,26 @@ namespace Csla.Xaml
       {
         DetachSource(old);
         AttachSource(source);
-        BusinessBase bb = Source as BusinessBase;
-        if (bb != null)
-        {
+        if (source is BusinessBase bb && !string.IsNullOrWhiteSpace(BindingPath))
           IsBusy = bb.IsPropertyBusy(BindingPath);
-        }
+        else
+          IsBusy = false;
       }
     }
 
     private void DetachSource(object source)
     {
-      var p = source as INotifyPropertyChanged;
-      if (p != null)
+      if (source is INotifyPropertyChanged p)
         p.PropertyChanged -= source_PropertyChanged;
-      INotifyBusy busy = source as INotifyBusy;
-      if (busy != null)
+      if (source is INotifyBusy busy)
         busy.BusyChanged -= source_BusyChanged;
     }
 
     private void AttachSource(object source)
     {
-      var p = source as INotifyPropertyChanged;
-      if (p != null)
+      if (source is INotifyPropertyChanged p)
         p.PropertyChanged += source_PropertyChanged;
-      INotifyBusy busy = source as INotifyBusy;
-      if (busy != null)
+      if (source is INotifyBusy busy)
         busy.BusyChanged += source_BusyChanged;
     }
 
